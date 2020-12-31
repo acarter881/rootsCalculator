@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="Alex Carter">
+<title>Quadratic Equation Roots Calculator</title>
+<style>
+    .table {display: table;}
+    .row {display: table-row;}
+    input:invalid:focus {border: 4px solid red}
+</style>
+<script>
+    // This function calculates the roots of the Quadratic Equation
+
+    function quadraticRoots(form) {
+        var a, b, c;                // numbers for a, b, and c, respectively
+        var aBox, bBox, cBox;       // number controls
+        var msg;                    // message after button is clicked AND input is valid
+        var firstRoot;              // FIRST root
+        var secondRoot;             // SECOND root (if applicable)
+        
+        aBox = form.elements["a"];
+        bBox = form.elements["b"];
+        cBox = form.elements["c"];
+        msg = form.elements["quadratic-roots"];
+        
+        if (!form.checkValidity()) {
+            msg.value = "";
+            a = aBox.valueAsNumber;
+            if (a == 0) {
+                alert("a must be non-zero.");
+            }
+            else if (!aBox.checkValidity() && bBox.checkValidity() && cBox.checkValidity()) {
+                alert("Invalid entry for a. Must be a non-zero integer between -99 and +99, inclusive.");
+            }
+            else if (aBox.checkValidity() && !bBox.checkValidity() && cBox.checkValidity()) {
+                alert("Invalid entry for b. Must be an integer between -99 and +99, inclusive.");
+            }
+            else if (aBox.checkValidity() && bBox.checkValidity() && !cBox.checkValidity()) {
+                alert("Invalid entry for c. Must be an integer between -99 and +99, inclusive.");
+            }
+            else if (aBox.checkValidity() && !bBox.checkValidity() && !cBox.checkValidity()) {
+                alert("Invalid entry for b. Must be an integer between -99 and +99, inclusive.\nInvalid entry for c. Must be an integer between -99 and +99, inclusive.");
+            }
+            else if (!aBox.checkValidity() && bBox.checkValidity() && !cBox.checkValidity()) {
+                alert("Invalid entry for a. Must be a non-zero integer between -99 and +99, inclusive\nInvalid entry for c. Must be an integer between -99 and +99, inclusive.");
+            }
+            else if (!aBox.checkValidity() && !bBox.checkValidity() && cBox.checkValidity()) {
+                alert("Invalid entry for a. Must be a non-zero integer between -99 and +99, inclusive.\nInvalid entry for b. Must be an integer between -99 and +99, inclusive.");
+            }
+            else if (!aBox.checkValidity() && !bBox.checkValidity() && !cBox.checkValidity()) {
+                alert("Please input valid values for a, b, and c.");
+            }    
+        } // end if
+        // All three numbers are valid (except for case where a is zero)
+        else {
+            a = aBox.valueAsNumber;
+            b = bBox.valueAsNumber;
+            c = cBox.valueAsNumber;
+
+            if (a == 0) {
+                alert("a must be non-zero.");
+            }
+            else if ((b ** 2) < (4 * a * c)) {
+                msg.value = "Solution: x's roots are imaginary";
+            }
+            else if ((b ** 2) == (4 * a * c)) {
+                firstRoot = (-b + Math.sqrt((b ** 2) - (4 * a * c)))/(2 * a)
+                msg.value = "Solution: x = " + firstRoot.toFixed(3).toString();
+            }
+            else if ((b ** 2) > (4 * a * c)) {
+                firstRoot = (-b + Math.sqrt((b ** 2) - (4 * a * c)))/(2 * a)
+                secondRoot = (-b - Math.sqrt((b ** 2) - (4 * a * c)))/(2 * a)
+                msg.value = "Solution: x = " + firstRoot.toFixed(3).toString() + ", x = " + secondRoot.toFixed(3).toString();
+            }
+        } // end else
+    } // end quadraticRoots
+</script>
+</head>
+<body> <!--body starts here-->
+<h1>Quadratic Equation Roots Calculator</h1>
+<p>
+    This web page finds the roots of a polynomial equation of the following form:<br>
+    <i>ax<sup>2</sup></i>+ <i>bx</i> + <i>c</i> = 0<br><br>
+    <i>a</i>, <i>b</i>, and <i>c</i> must be integers between -99 and +99, and <i>a</i> must be non-zero.
+</p>
+<form class="table" id="myForm">
+    <div class="row">
+        <label for="a">a:</label>
+        <input type="number" id="a" min="-99" max="99" step="1" size="2" required>&nbsp;
+        <label for="b">b:</label>
+        <input type="number" id="b" min="-99" max="99" step="1" size="2" required>&nbsp;
+        <label for="c">c:</label>
+        <input type="number" id="c" min="-99" max="99" step="1" size="2" required>
+    </div>
+</form>
+<br>
+<div>
+    <input type="button" form="myForm" value="Calculate roots" onclick="quadraticRoots(this.form);"> 
+    <br><br>
+    <output id="quadratic-roots" form="myForm"></output> <!--If there's valid input, show the solution-->
+</div>
+</body> <!--body ends here-->
+</html>
